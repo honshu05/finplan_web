@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+html {
+  font-size: 100%; /* Reset to standard, handled via zoom */
+}
+
+@theme {
+  --color-background: #05070A;
+  --color-accent: #00F2FE;
+  --color-accent-secondary: #4facfe;
+  --color-card-bg: rgba(255, 255, 255, 0.03);
+  --color-card-border: rgba(255, 255, 255, 0.08);
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #8E9AAF;
+  --color-positive: #00FFCC;
+  --color-negative: #FF4D4D;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-white antialiased overflow-x-hidden;
+  }
+}
+
+@utility glass {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+}
+
+@utility glass-card {
+  @apply glass shadow-2xl;
+  padding: 2rem;
+}
+
+@utility glass-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px -12px rgba(0, 242, 254, 0.15);
+  }
+}
+
+@utility neon-text {
+  background: linear-gradient(to right, var(--color-accent), var(--color-accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hide scrollbar but allow scrolling */
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ========================================================
+   3. PREMIUM PRINT & PDF STYLE SYSTEM OVERRIDES
+   ======================================================== */
+@media print {
+  html, body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  #root, .flex-col, main, aside, header {
+    height: auto !important;
+    overflow: visible !important;
+    zoom: 1 !important; /* Disable zoom factor for printing */
+    background: transparent !important;
+  }
+  
+  .print-hidden, aside, header, .flex-1 > div:first-child, .shrink-0 {
+    display: none !important;
+  }
+  
+  /* Reset layout cards */
+  .glass, .glass-card, .bg-white\/5, .bg-white\/\[0\.01\] {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    color: #000000 !important;
+  }
+
+  /* Force charts text and elements visibility */
+  text {
+    fill: #000000 !important;
+    font-weight: 700 !important;
+  }
+  
+  .recharts-cartesian-grid-horizontal line {
+    stroke: rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  path.recharts-curve {
+    stroke-width: 3px !important;
+  }
+}
