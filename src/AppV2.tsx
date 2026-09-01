@@ -144,10 +144,20 @@ export default function App() {
     const loadData = async () => {
       setIsLoadingCSV(true);
       try {
+        const base = import.meta.env.BASE_URL ? (import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`) : './';
         const [resIn, resCh, resJp] = await Promise.all([
-          fetch('/historical_asset_data_clean.csv').then(r => r.text()),
-          fetch('/historical_asset_data_china.csv').then(r => r.text()),
-          fetch('/historical_asset_data_japan.csv').then(r => r.text())
+          fetch(`${base}historical_asset_data_clean.csv`).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.text();
+          }),
+          fetch(`${base}historical_asset_data_china.csv`).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.text();
+          }),
+          fetch(`${base}historical_asset_data_japan.csv`).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.text();
+          })
         ]);
         setIndiaData(parseCSV(resIn));
         setChinaData(parseCSV(resCh));
